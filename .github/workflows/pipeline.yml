@@ -30,7 +30,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: docker/build-push-actions@v7
+      - uses: docker/build-push-action@v7
         with:
           push: true
           tags: ghcr.io/prashantprojectweb/ci-cd:latest
