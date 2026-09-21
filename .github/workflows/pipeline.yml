@@ -47,6 +47,8 @@ jobs:
       - uses: docker/build-push-action@v7
         with:
           push: true
-          tags: ghcr.io/prashantprojectweb/ci-cd:latest
+          tags: |
+            ghcr.io/prashantprojectweb/ci-cd:latest
+            ghcr.io/prashantprojectweb/ci-cd:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
