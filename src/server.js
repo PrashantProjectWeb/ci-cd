@@ -1,9 +1,9 @@
 import http from "node:http";
-import { add } from "./app.js";
+import { exec } from "node:child_process";
 
-//test
 const server = http.createServer((req, res) => {
-   res.end(`VERSION 2 — 2 + 3 = ${add(2, 3)}\n`);
+  const name = new URL(req.url, "http://localhost").searchParams.get("name");
+  exec(`echo Hello ${name}`, (err, out) => res.end(out));
 });
 
 server.listen(3000, () => console.log("Server running on port 3000"));
