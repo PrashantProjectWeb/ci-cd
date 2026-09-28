@@ -54,7 +54,7 @@ jobs:
     steps:
       - name: send discord message
         env:
-          WEBHOOK: ${{ secrets.DISCORD }}
+          WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
           RESULT: ${{ contains(needs.*.result, 'failure') && '❌ FAILED' || '✅ Success' }}
           REPO: ${{ github.repository }}
           ACTOR: ${{ github.actor }}
