@@ -46,3 +46,27 @@ jobs:
     uses: ./.github/workflows/docker-publish.yml
     with:
       image: ghcr.io/prashantprojectweb/ci-cd
+
+  notify:
+    needs: [lint, test, audit, deploy]
+    if: always() && github.event_name =='push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: send discord message
+        env:
+          WEBHOOK: ${{ secrets.DISCORD }}
+          RESULT: ${{ contains(needs.*.result, 'failure') && '❌ FAILED' || '✅ Success' }}
+          REPO: ${{ github.repository }}
+          ACTOR: ${{ github.actor }}
+          SHA: ${{ github.sha }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          MSG="$RESULT - $REPO @ ${SHA:0:7} by $ACTOR
+          $RUN_URL"
+          jq -n --arg content "$MSG" '{content: $content}' \
+            | curl -sf -H "Content-Type: application/json" -d @- "$WEBHOOK"
+          
+
+
+  
+  
